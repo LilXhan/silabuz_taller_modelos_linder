@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    # command: sh -c "python manage.py makemigrations && python manage.py migrate"
+    container_name: school-app
+    volumes:
+      - .:/app/
+    ports:
+      - 8000:8000
+
+networks:
+  default:
+    name: development
+    external: True

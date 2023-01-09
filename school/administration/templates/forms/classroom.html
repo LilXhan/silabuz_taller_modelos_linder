@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="text-center m-3 d-flex align-items-center justify-content-between">
+    <h2>Agregar salon</h2>
+    <a href="{% url 'index' %}" class="btn btn-primary">Ver salones</a>
+  </div>
+  <hr>
+  <form method="POST" action="" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Agregar</button>
+  </form>
+
+{% endblock %}
