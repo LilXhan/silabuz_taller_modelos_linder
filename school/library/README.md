@@ -44,3 +44,11 @@ Por cada consulta de ser posible genere una vista, en su defecto agrupe las rela
 
 Adicionar bootstrap a nuestro proyecto de Django
 
+Links PPT:
+
+- [PPT](https://docs.google.com/presentation/d/e/2PACX-1vThp35F_gSpiVDnkZ9ceLx4FcYRhETKq-1heS6DbiMv66ketLc-S0eeioY5oq6tpktg_1lM2eolfwl2/embed?start=false&loop=false&delayms=3000)
+
+Links Youtube:
+
+- [Teoria](https://www.youtube.com/watch?v=MgRienHMDa4&list=PLxI5H7lUXWhjV-yCSEuJXxsDmNESrvbw3&index=10&ab_channel=Silabuz)
+- [Practica](https://www.youtube.com/watch?v=pAL5yk_xKiQ&list=PLxI5H7lUXWhjV-yCSEuJXxsDmNESrvbw3&index=9&ab_channel=Silabuz)
