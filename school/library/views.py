@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.views import View
 from .models import Book
 
+# Proteger rutas 
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # Librerias para los querysets 
 
 from django.db.models.functions import Length, ExtractYear
@@ -11,7 +15,7 @@ from django.db.models import Max, Min, Avg, StdDev, Q, Count
 import urllib.request
 import json 
 
-class LibraryQuery(View):
+class LibraryQuery(LoginRequiredMixin,View):
 
     def get(self, request):
 
@@ -69,7 +73,7 @@ class LibraryQuery(View):
         return render(request, 'querys.html')
 
 
-class Library(View):
+class Library(LoginRequiredMixin, View):
 
     def get(self, request):
         

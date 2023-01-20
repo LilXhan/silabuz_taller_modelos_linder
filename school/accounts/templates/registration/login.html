@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <!--Django form error-->
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger d-flex align-items-center justify-content-center m-2" role="alert">
+        <ul>
+          {% for error in form.non_field_errors %}
+            <li>{{ error|escape }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+
+    <div class="d-flex align-items-center justify-content-center mt-3">
+      <div class="card" style="width: 50%;">
+        <div class="card-body">
+          <h2 class="card-title">Login</h2>
+          <form method="POST" novalidate action="">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-12">
+                <label class="form-label">Usuario</label>
+                <input type="text" name="username" class="form-control">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Contraseña</label>
+                <input type="password" name="password" class="form-control">
+              </div>
+              <div class="col-12 d-flex align-items-center justify-content-between">
+                <button class="btn btn-primary mt-2" type="submit">Ingresar</button>
+                <a href="{% url 'register' %}" class="btn btn-primary mt-2">Registrar</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}

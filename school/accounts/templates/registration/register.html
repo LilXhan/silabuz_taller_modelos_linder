@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="d-flex align-items-center justify-content-center mt-3">
+  <div class="card">
+    <div class="card-body">
+      <h2 class="card-title">Register</h2>
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  labels = document.querySelectorAll('label');
+  labels.forEach(label => {
+    label.classList.add('form-label');
+  });
+  inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.classList.add('form-control');
+  });
+</script>
+
+
+{% endblock %}
