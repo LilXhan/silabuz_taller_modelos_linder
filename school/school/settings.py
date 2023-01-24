@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'administration.apps.AdministrationConfig',
     'library.apps.LibraryConfig',
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    'celery'
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Podemos modificar a donde ira el login y tambien vamos a definir quien es login
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
+
+
+# Celery settings
+
+# Connect broker
+CELERY_BROKER_URL = os.environ.get('URL_REDIS_CELERY')
+# Celery result backend
+CELERY_RESULT_BACKEND = os.environ.get('URL_REDIS_CELERY')
+# Informacion que yo reciba y envie sea en json
+CELERY_ACCEPT_CONTENT = {'application/json'}
+CELERY_TASK_SEREALIZER = 'json'
+CELERY_RESULT_SEREALIZER = 'json'
+# Timezone de celery
+CELERY_TIMEZONE = 'America/Lima'
+

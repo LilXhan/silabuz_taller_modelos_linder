@@ -2,13 +2,19 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    image: school
+    build: 
+      context: .
+      dockerfile: Dockerfile
     # command: sh -c "python manage.py makemigrations && python manage.py migrate"
     container_name: school-app
     volumes:
       - .:/app/
     ports:
       - 8000:8000
+    expose:
+      - 8000
+    command: python manage.py runserver 0.0.0.0:8000
 
 networks:
   default:
