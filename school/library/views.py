@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from .models import Book
 from .forms import InputForm
-from .tasks import send_book
+from .tasks import send_book, insert_books
 from django.http import HttpResponse
 # Proteger rutas 
 
@@ -100,55 +100,6 @@ class LibraryQuery(LoginRequiredMixin,View):
 class Library(LoginRequiredMixin, View):
     
     def get(self, request):
-        
-        url_api = 'https://silabuzinc.github.io/books/books.json'
+        insert_books.delay()     
 
-        response = urllib.request.urlopen(url_api)
-
-        # books => lista de objetos o diccionarios
-        books = json.loads(response.read())
-
-        for book in books:
-            book.pop('bookID')
-            book.pop('FIELD13')
-
-            try:
-                book['num_pages'] = int(book['num_pages'])
-            except:
-                book['num_pages'] = 0
-                
-            try:
-                book['average_rating'] = float(book['average_rating'])
-            except:
-                book['average_rating'] = 0
-
-            book['authors'] = book['authors'][:400]
-
-            # change time 
-
-            condition = book['publication_date']
-
-            if condition == '11/31/2000' or condition == '6/31/1982':
-                date = '2023-1-13'
-                book['publication_date'] = date
-                b = Book.objects.create(**book)
-                b.save()
-                continue
-
-            book['publication_date'] = book['publication_date'].split('/')
-
-            if len(book['publication_date']) == 3:
-                date = ''
-                date += book['publication_date'][2] + '-'
-                date += book['publication_date'][0] + '-'
-                date += book['publication_date'][1]
-            else:
-                date = '2023-1-13'
-                
-            book['publication_date'] = date
-
-            b = Book.objects.create(**book)
-            b.save()
-
-
-        return render(request, 'index.html')
+        return HttpResponse('Ya se esta subiendo a la db')
