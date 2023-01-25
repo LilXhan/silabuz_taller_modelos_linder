@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<ul>
+  <li>
+    {{book.title}}
+  </li>
+  <li>
+    {# <a href="{% url 'only_author' book.id%}">{{book.authors}}</a> #}
+  </li>
+  <li>
+    {{book.average_rating}}
+  </li>
+  <li>
+    {{book.isbn}}
+  </li>
+</ul>
+
+<form method="POST">
+  {% csrf_token %}
+  {{form.as_p}}
+  <input type="submit" class="btn btn-primary">
+</form>
+
+<script>
+  const inputs = document.querySelectorAll('input')
+
+  inputs.forEach(input => {
+    input.classList.add('form-control')
+  })
+</script>
+
+{% endblock content %}

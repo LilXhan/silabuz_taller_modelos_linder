@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.views import View
 from .models import Book
-
+from .forms import InputForm
+from .tasks import send_book
+from django.http import HttpResponse
 # Proteger rutas 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,6 +16,29 @@ from django.db.models import Max, Min, Avg, StdDev, Q, Count
 # Para poder consumir una api en django podemos usar urllib.request
 import urllib.request
 import json 
+
+def select_view(request, id):
+    book = Book.objects.get(pk=id)
+    request.session['authors'] = book.authors
+    request.session['id'] = book.id 
+
+    context = {
+        'book': book,
+        'form': InputForm()
+    }
+
+    if request.method == 'POST':
+        form = InputForm(request.POST)
+
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            send_book.delay(name, email)
+            return HttpResponse(f"{name} y {email}")
+
+    return render(request, 'oneBook.html', context)
+
+
 
 class LibraryQuery(LoginRequiredMixin,View):
 
@@ -72,9 +97,8 @@ class LibraryQuery(LoginRequiredMixin,View):
 
         return render(request, 'querys.html')
 
-
 class Library(LoginRequiredMixin, View):
-
+    
     def get(self, request):
         
         url_api = 'https://silabuzinc.github.io/books/books.json'

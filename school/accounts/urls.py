@@ -2,12 +2,13 @@ from django.urls import path
 # Django tiene un template de login preparado para el login
 # Nos provee de la clase LoginView para poder mostrar el formulario de inicio de sesion
 from django.contrib.auth.views import LoginView, logout_then_login
-from .views import RegisterUserView
+from . import views
 
 urlpatterns = [
     path('accounts/login/', LoginView.as_view(), name='login'),
-    path('accounts/register/', RegisterUserView.as_view(), name='register'),
-    path('accounts/logout', logout_then_login, name='logout' )
+    path('accounts/register/', views.RegisterUserView.as_view(), name='register'),
+    path('accounts/logout', logout_then_login, name='logout' ),
+    path('test/', views.test_celery, name='celery')
 ]
 
 """
