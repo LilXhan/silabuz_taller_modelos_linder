@@ -1,10 +1,15 @@
 from django.shortcuts import render
 from django.views import View
+from django.views.generic import UpdateView, ListView
 from .models import Book
 from .forms import InputForm
 from .tasks import send_book, insert_books
 from django.http import HttpResponse
 # Proteger rutas 
+from django.core.mail import send_mail
+from django.conf import settings
+
+
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -17,6 +22,18 @@ from django.db.models import Max, Min, Avg, StdDev, Q, Count
 import urllib.request
 import json 
 
+class BookListView(ListView):
+    model = Book
+    template_name = 'booklist.html'
+    paginate_by = 20
+
+
+
+class UpdateBook(UpdateView):
+    model = Book
+    fields = ['authors']
+    template_name = 'editBook.html'
+
 def select_view(request, id):
     book = Book.objects.get(pk=id)
     request.session['authors'] = book.authors
@@ -27,6 +44,8 @@ def select_view(request, id):
         'form': InputForm()
     }
 
+    authors = book.authors
+
     if request.method == 'POST':
         form = InputForm(request.POST)
 
@@ -34,6 +53,14 @@ def select_view(request, id):
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             send_book.delay(name, email)
+
+            subject = 'Hi Flavio'
+            message = f"Authors: {authors}"
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email,]
+
+            send_mail(subject, message, email_from, recipient_list)
+
             return HttpResponse(f"{name} y {email}")
 
     return render(request, 'oneBook.html', context)
@@ -103,3 +130,4 @@ class Library(LoginRequiredMixin, View):
         insert_books.delay()     
 
         return HttpResponse('Ya se esta subiendo a la db')
+
